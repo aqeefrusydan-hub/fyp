@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify, session, url_for
+from flask import Flask, render_template, request, jsonify, session, url_for, redirect
 import gspread
 import os
 import gdown
@@ -171,3 +171,4 @@ def predict():
 # ==============================
 if __name__ == "__main__":
     app.run(debug=True)
+
