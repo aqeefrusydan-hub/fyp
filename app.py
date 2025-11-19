@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, jsonify, session, url_for
 import gspread
 import os
+import gdown
 from google.oauth2.service_account import Credentials
 from datetime import datetime
 import numpy as np
@@ -13,6 +14,21 @@ from tensorflow.keras.applications.xception import preprocess_input
 # 🔥 LOAD XCEPTION DEEPFAKE MODEL
 # ==============================
 MODEL_PATH = os.path.join("saved_models/xception_deepfake.h5")
+
+
+def download_model():
+    if not os.path.exists("saved_models"):
+        os.makedirs("saved_models")
+
+    if not os.path.exists(MODEL_PATH):
+        print("Model not found. Downloading...")
+        url = "https://drive.google.com/uc?export=download&id=1TfXYhTK0G_1hyg955JYjiqTj-6Tb8GHvD"
+        gdown.download(url, MODEL_PATH, quiet=False)
+        print("Model download complete!")
+
+
+# Call before loading model
+download_model()
 
 model = load_model(MODEL_PATH)
 print("✅ Xception Deepfake model loaded successfully")
@@ -81,6 +97,12 @@ def home():
 @app.route('/extension')
 def extension():
     return render_template('index.html')
+
+
+@app.route("/logout")
+def logout():
+    session.clear()  # clears login session
+    return redirect("/")  # send user back to homepage
 
 
 @app.route('/login', methods=['GET', 'POST'])
