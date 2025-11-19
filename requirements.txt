@@ -6,4 +6,5 @@ gspread
 google-auth
 h5py
 pillow
+gdown
 gunicorn
